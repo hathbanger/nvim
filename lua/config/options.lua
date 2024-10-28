@@ -3,7 +3,7 @@
 -- Add any additional options here
 --
 vim.opt.wrap = true
-vim.opt.scrolloff = 3
+vim.opt.scrolloff = 20
 vim.opt.sidescrolloff = 5
 vim.opt.lazyredraw = true
 vim.opt.ttyfast = true
