@@ -61,10 +61,15 @@ require("lazy").setup({
 local lspconfig = require("lspconfig")
 lspconfig.tsserver.setup({
   on_attach = function(client, bufnr)
-    local opts = { noremap = true, silent = true }
+    local opts = { noremap = true, silent = true, servers = {
+      ts_ls = { enabled = false },
+    } }
     vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
     vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
     vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+    if client.server_capabilities.inlayHintProvider then
+      vim.lsp.buf.inlay_hint(bufnr, true)
+    end
   end,
 })
 
@@ -89,6 +94,8 @@ require("nvim-treesitter.configs").setup({
   ensure_installed = { "typescript", "javascript", "html", "css", "json" }, -- Add more languages as needed
   highlight = { enable = true },
 })
+
+vim.lsp.handlers["textDocument/inlayHint"] = function() end
 
 vim.api.nvim_set_keymap("n", "<leader>ff", ":Telescope find_files<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { noremap = true, silent = true })

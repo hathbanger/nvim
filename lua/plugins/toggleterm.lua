@@ -2,15 +2,22 @@ return {
   "akinsho/toggleterm.nvim",
   config = function()
     require("toggleterm").setup({
-      size = 20, -- Height for horizontal, width for vertical
       open_mapping = [[<C-t>]], -- Keybinding to toggle terminal
       shade_filetypes = {}, -- Disable shading for specific filetypes
       shading_factor = 2, -- Shading intensity (1-3)
-      direction = "horizontal", -- Options: 'horizontal', 'vertical', 'float'
+      direction = "vertical", -- Options: 'horizontal', 'vertical', 'float'
+      width = 80, -- Width of the terminal
       float_opts = { -- Customize floating window appearance
         border = "curved",
         winblend = 3,
       },
+      size = function(term)
+        if term.direction == "horizontal" then
+          return 15
+        elseif term.direction == "vertical" then
+          return 80
+        end
+      end,
     })
 
     -- Custom terminal example for lazygit
